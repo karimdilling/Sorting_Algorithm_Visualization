@@ -50,14 +50,14 @@ generate_data()
 
 # Configure buttons
 btn_data_amount = tk.Button(root, text="Small Data Amount", command=lambda: set_data_amount(SMALL_DATA))
-btn_data_amount.pack(side=tk.LEFT, padx=5)
+btn_data_amount.pack(side=tk.LEFT, padx=20)
 btn_data_amount = tk.Button(root, text="Medium Data Amount", command=lambda: set_data_amount(MEDIUM_DATA))
-btn_data_amount.pack(side=tk.LEFT, padx=5)
+btn_data_amount.pack(side=tk.LEFT, padx=20)
 btn_data_amount = tk.Button(root, text="Large Data Amount", command=lambda: set_data_amount(LARGE_DATA))
-btn_data_amount.pack(side=tk.LEFT, padx=5)
+btn_data_amount.pack(side=tk.LEFT, padx=20)
 
 btn_randomize = tk.Button(root, text = "New Data", command=generate_data)
-btn_randomize.pack(side=tk.LEFT, padx=50)
+btn_randomize.pack(side=tk.LEFT, padx=65)
 
 # Drop Down Menu for algorithm choice
 algorithm_options = ["Bubble-Sort", "Merge-Sort", "Quick-Sort"]
