@@ -1,5 +1,5 @@
 import tkinter as tk
-import random, time
+import random, time, asyncio
 
 
 # Size of window and canvas dimensions
@@ -8,8 +8,8 @@ CANVAS_WIDTH = 1000
 CANVAS_HEIGHT = 600
 
 # Set data amounts for different buttons
-SMALL_DATA = 10
-MEDIUM_DATA = 20
+SMALL_DATA = 20
+MEDIUM_DATA = 50
 LARGE_DATA = 100
 
 # Amount of bars that represent data
@@ -144,16 +144,18 @@ def merge(arr, start, mid, end):
 
 
 # Quicksort:
-def quick_sort(arr, start, end):
+async def quick_sort(arr, start, end):
     if start >= end:
         return
-    index = partition(arr, start, end)
+    index = await partition(arr, start, end)
     states[index] = -1
-    quick_sort(arr, start, index - 1)
-    quick_sort(arr, index + 1, end)
+    await asyncio.gather(
+        quick_sort(arr, start, index - 1),
+        quick_sort(arr, index + 1, end)
+    )
 
 
-def partition(arr, start, end):
+async def partition(arr, start, end):
     for i in range(start, end):
         states[i] = 1
     pivot_index = start
@@ -165,11 +167,12 @@ def partition(arr, start, end):
             states[pivot_index] = -1
             pivot_index += 1
             states[pivot_index] = 0
-            display_data(arr, ["yellow" if x == pivot_index else "orange" if x == end else "purple" if states[x] == 1 else "blue" for x in range(len(arr))])
-            time.sleep(0.1)
+            display_data(arr, ["yellow" if states[x] == 0 else "purple" if states[x] == 1 else "blue" for x in range(len(arr))])
+            await asyncio.sleep(0.1)
     arr[pivot_index], arr[end] = arr[end], arr[pivot_index]
     for i in range(start, end):
-        states[i] = -1
+        if i != pivot_index:
+            states[i] = -1
     display_data(arr, ["blue" for _ in range(len(arr))])
     return pivot_index
 
@@ -181,7 +184,7 @@ def sorting_algorithms(data):
     elif options.get() == "Merge-Sort":
         merge_sort(data, 0, len(data) - 1)
     elif options.get() == "Quick-Sort":
-        quick_sort(data, 0, len(data) - 1)
+        asyncio.run(quick_sort(data, 0, len(data) - 1))
 
 # Run algorithm button
 btn_run = tk.Button(root, text="Run Selected Algorithm", command=lambda: sorting_algorithms(data))
