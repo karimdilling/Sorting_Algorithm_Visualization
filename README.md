@@ -4,3 +4,7 @@ This Python program visualizes the three sorting algorithms bubble sort, merge s
 Here is a preview:
 
 ![Visualization of sorting](sorting_visualized.gif)
+
+## Requirements
+Recommended: Python 3.7+\
+Uses the built in Tkinter GUI library
